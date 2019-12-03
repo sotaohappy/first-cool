@@ -3,7 +3,7 @@ import os
 def tiquepg(fname_1,fname_2):
     with open(fname_1) as f_object_1:
         lines = f_object_1.readlines()
-    match_1 = re.compile(r'[0-2]\d:[0-5]\d:[0-5]\d \S+')
+    match_1 = re.compile(r'[0-2]\d:[0-5]\d:[0-5]\d')
     for line in lines:
         line = line.strip() 
         rematch = re.match(match_1, line)
