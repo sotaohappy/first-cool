@@ -3,9 +3,9 @@ import os
 def tiquepg(fname_1,fname_2):
     with open(fname_1) as f_object_1:
         lines = f_object_1.readlines()
-    match_1 = re.compile(r'[0-2]\d:[0-5]\d:[0-5]\d')
-    for line in lines:
-        line = line.strip() 
+    match_1 = re.compile(r'[0-2]\d:[0-5]\d:[0-5]\d')   #通过正则表达式提取出时间
+    for line in lines:            #依次读取每行
+        line = line.strip()           #去除每行首尾的空格
         rematch = re.match(match_1, line)
         if rematch is not None:
             with open(fname_2, 'a') as f_object_2:
