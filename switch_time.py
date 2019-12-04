@@ -2,53 +2,57 @@
 @Author: sotao
 @Date: 2019-12-04 16:22:36
 @LastEditors: sotao
-@LastEditTime: 2019-12-04 17:19:32
+@LastEditTime: 2019-12-04 23:20:16
 '''
 import re
 import os
 
-
-def switch(switch_1, switch_2):
-    with open(switch_1) as switch_object_1:
-        lines = switch_object_1.readlines()
-    seconds_ls = []
-    for line in lines:                             # 依次读取每行
-        line = line.strip()                        # 去除每行首尾的空格
-        data_ls = line.split(':')                  # 将时间以“:”符号分割成列表
-        data_seconds = 3600 * \
-            int(data_ls[0]) + 60 * int(data_ls[1]) + \
-            int(data_ls[2])                        # 将时间转换成秒数
-        seconds_ls.append(data_seconds)            # 将所有秒数放到列表seconds_ls里
-    time_ls = []
-    for n in range(1, len(seconds_ls)):            # 循环列表元素个数减1次
-        time = seconds_ls[n] - seconds_ls[n - 1]   # 列表内前后元素作差
-        time_ls.append(time)                       # 将各个差值放到列表中
-
-    for t in time_ls:                              # 依次读取列表中元素
-        if t is not None:
-            with open(switch_2, 'a') as switch_object_2:
-                switch_object_2.write(str(t) + '\n')  # 将每个元素写入记事本
-
-
 def switch_time(fetch_address, save_address):
     with open(fetch_address) as fetch_object_1:
         lines = fetch_object_1.readlines()
-    match_1 = re.compile(r'[0-2]\d:[0-5]\d:[0-5]\d')  #通过正则表达式提取出时间
-    match_ls = []
+    match_re = re.compile(r'([0-2]\d:[0-5]\d:[0-5]\d) (\S+)')
+    match_time_ls = []
+    match_program_ls = []
     for line in lines:                                 #依次读取每行
         line = line.strip()                            #去除每行首尾的空格
-        rematch = re.match(match_1, line)
-        match_ls.append(rematch)
-    '''
-    以上写出的函数部分 是 把匹配的时间 保存在列表中
-    下面的函数 处理 将处理列表中的时间 转换成秒数 并把转好的数据保存 一个列表中
-    重新写出一个 正则表达式 将读取的 时间  节目名称 分别保存另外在两个列表中
-    将这三个列表 每个元素 合并成一个小列表 再把各个小列表合并成一个大列表
-    对于 播出频道 和  每天的日期  再读取 存放 在一个列表中
-    合并以上列表中的数据 按照 节目单格式 整体输出 到 save_address 的地址
-
-    '''
+        match_re_time = match_re.match(line)
+        if match_re_time!=None:
+            match_re_time.group(1)    #通过正则表达式提取出时间
+        else:
+            pass
+        match_re_program = match_re.match(line)
+        if match_re_program!=None:
+            match_re_program.group(2)    #通过正则表达式提取出节目名称
+        else:
+            pass
+        time_rematch = re.match(match_re, line)   #匹配出符合正则表达式的时间，存储在time_rematch中
+        program_rematch =re.match(match_re, line)   #匹配出符合正则表达式的节目名称，存储在program_rematch中
+        match_time_ls.append(time_rematch)             #将time_rematch的值，存储在match_time_ls列表中
+        match_program_ls.append(program_rematch)       #将program_rematch的值，存储在match_program_ls列表中
     
+    seconds_time_ls = []
+    for match_time in match_time_ls:                           # 依次读取match_time_ls列表中元素
+        if match_time!=None:
+            apart_time_ls = match_time.split(':')                  # 将时间以“:”符号分割成列表
+            apart_time_seconds = 3600 * \
+            int(apart_time_ls[0]) + 60 * int(apart_time_ls[1]) + \
+            int(apart_time_ls[2])                        # 将时间转换成秒数
+            seconds_time_ls.append(apart_time_seconds)            # 将所有秒数放到seconds_time_ls列表内
+        else:
+            pass
+    time_length_ls = []
+    for n in range(1, len(seconds_time_ls)):            # 循环列表元素个数减1次
+        time_length = seconds_time_ls[n] - seconds_time_ls[n - 1]   # 列表内前后元素作差
+        time_length_ls.append(time_length)  # 将各个差值放到列表中
+    
+    merge_time_length_program_ls = []
+    merge_time_length_program_ls = map(lambda x, y, z: x + ' ' + y + ' ' + z, match_time_ls, time_length_ls, match_program_ls)
+
+    
+    for t in merge_time_length_program_ls:                              # 依次读取列表中元素
+        if t is not None:
+            with open(save_address, 'a') as save_object_2:
+                save_object_2.write(str(t) + '\n')  # 将每个元素写入记事本
 
 # 取当前文件中所有EPG文档的名称，存在epg_name_ls列表中
 epg_fetch_address = input("EPG源文件地址：")
