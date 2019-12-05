@@ -2,7 +2,7 @@
 @Author: sotao
 @Date: 2019-12-04 16:22:36
 @LastEditors: sotao
-@LastEditTime: 2019-12-05 17:04:21
+@LastEditTime: 2019-12-05 17:15:48
 '''
 import re
 import os
@@ -16,10 +16,13 @@ def switch_time(fetch_address, save_address):
     time_program_ls = []
     for line in lines:  # 依次读取每行
         line = line.strip()  # 去除每行首尾的空格
+        # 匹配正则表达式的节目单，保存在match_re_list中
         match_re_list = match_re.findall(line)
-        if len(match_re_list) > 0:
-            time_program_ls = match_re_list[0].split(' ')
+        if len(match_re_list) > 0:                         # 列表中有元素
+            time_program_ls = match_re_list[0].split(' ')  # 将match_re_list，以空格来分割成两个元素
+            # 第一个元素（时间），保存在match_time_ls列表中
             match_time_ls.append(time_program_ls[0])
+            # 第二个元素（节目名称），保存在match_program_ls列表中
             match_program_ls.append(time_program_ls[1])
         else:
             continue
@@ -44,8 +47,8 @@ def switch_time(fetch_address, save_address):
     print(time_length_ls)
     
     merge_time_length_program_ls = []
+    # 将三个列表中的同位置元素合并成一个元素，存放在merge_time_length_program_ls列表中
     merge_time_length_program_ls = map(lambda x, y, z: x + ' ' + y + ' ' + z, match_time_ls, time_length_ls, match_program_ls)
-
     
     for t in merge_time_length_program_ls:                              # 依次读取列表中元素
         if t is not None:
