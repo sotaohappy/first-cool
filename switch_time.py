@@ -2,7 +2,7 @@
 @Author: sotao
 @Date: 2019-12-04 16:22:36
 @LastEditors: sotao
-@LastEditTime: 2019-12-05 17:15:48
+@LastEditTime: 2019-12-05 17:24:07
 '''
 import re
 import os
@@ -43,7 +43,7 @@ def switch_time(fetch_address, save_address):
     time_length_ls = []
     for n in range(1, len(seconds_time_ls)):            # 循环列表元素个数减1次
         time_length = seconds_time_ls[n] - seconds_time_ls[n - 1]   # 列表内前后元素作差
-        time_length_ls.append(str(time_length))  # 将各个差值放到列表中
+        time_length_ls.append(str(time_length))  # 差值计算出来之后是int类型，转换成str后将各个差值放到列表中
     print(time_length_ls)
     
     merge_time_length_program_ls = []
