@@ -1,11 +1,11 @@
 '''
 @Author: sotao
-@Date: 2019-12-04 16:22:36
+@Date: 2019-12-05 14:30:44
 @LastEditors: sotao
-@LastEditTime: 2019-12-05 17:04:21
+@LastEditTime: 2019-12-05 16:52:44
 '''
-import re
 import os
+import re
 
 def switch_time(fetch_address, save_address):
     with open(fetch_address) as fetch_object_1:
@@ -25,32 +25,6 @@ def switch_time(fetch_address, save_address):
             continue
     print(match_time_ls)
     print(match_program_ls)
-    
-    seconds_time_ls = []
-    for match_time in match_time_ls:                           # 依次读取match_time_ls列表中元素
-        if match_time!=None:
-            apart_time_ls = match_time.split(':')                  # 将时间以“:”符号分割成列表
-            apart_time_seconds = 3600 * \
-            int(apart_time_ls[0]) + 60 * int(apart_time_ls[1]) + \
-            int(apart_time_ls[2])                        # 将时间转换成秒数
-            seconds_time_ls.append(apart_time_seconds)            # 将所有秒数放到seconds_time_ls列表内
-        else:
-            continue
-    print(seconds_time_ls)
-    time_length_ls = []
-    for n in range(1, len(seconds_time_ls)):            # 循环列表元素个数减1次
-        time_length = seconds_time_ls[n] - seconds_time_ls[n - 1]   # 列表内前后元素作差
-        time_length_ls.append(str(time_length))  # 将各个差值放到列表中
-    print(time_length_ls)
-    
-    merge_time_length_program_ls = []
-    merge_time_length_program_ls = map(lambda x, y, z: x + ' ' + y + ' ' + z, match_time_ls, time_length_ls, match_program_ls)
-
-    
-    for t in merge_time_length_program_ls:                              # 依次读取列表中元素
-        if t is not None:
-            with open(save_address, 'a') as save_object_2:
-                save_object_2.write(str(t) + '\n')  # 将每个元素写入记事本
 
 # 取当前文件中所有EPG文档的名称，存在epg_name_ls列表中
 epg_fetch_address = input("EPG源文件地址：")
@@ -65,3 +39,5 @@ for epg_name in epg_name_ls:                                           # 依次�
     epg_merge_fetch_address = os.path.join(
         epg_fetch_address, epg_name)                                   # 合并出读取源EPG文件路径
     switch_time(epg_merge_fetch_address, epg_merge_save_address)
+
+
