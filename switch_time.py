@@ -2,7 +2,7 @@
 @Author: sotao
 @Date: 2019-12-04 16:22:36
 @LastEditors: sotao
-@LastEditTime: 2019-12-05 17:24:07
+@LastEditTime: 2019-12-06 10:04:51
 '''
 import re
 import os
@@ -44,6 +44,7 @@ def switch_time(fetch_address, save_address):
     for n in range(1, len(seconds_time_ls)):            # 循环列表元素个数减1次
         time_length = seconds_time_ls[n] - seconds_time_ls[n - 1]   # 列表内前后元素作差
         time_length_ls.append(str(time_length))  # 差值计算出来之后是int类型，转换成str后将各个差值放到列表中
+    time_length_ls.append('0')
     print(time_length_ls)
     
     merge_time_length_program_ls = []
@@ -54,17 +55,3 @@ def switch_time(fetch_address, save_address):
         if t is not None:
             with open(save_address, 'a') as save_object_2:
                 save_object_2.write(str(t) + '\n')  # 将每个元素写入记事本
-
-# 取当前文件中所有EPG文档的名称，存在epg_name_ls列表中
-epg_fetch_address = input("EPG源文件地址：")
-epg_name_ls = os.listdir(epg_fetch_address)
-print(epg_name_ls)
-print(len(epg_name_ls))
-epg_save_address = input("EPG保存地址： ")
-for epg_name in epg_name_ls:                                           # 依次读取列表中EPG文档的名称
-    epg_merge_save_address = os.path.join(
-        epg_save_address, epg_name)  # 合并出保存新EPG文件路径
-    print(epg_merge_save_address)
-    epg_merge_fetch_address = os.path.join(
-        epg_fetch_address, epg_name)                                   # 合并出读取源EPG文件路径
-    switch_time(epg_merge_fetch_address, epg_merge_save_address)
